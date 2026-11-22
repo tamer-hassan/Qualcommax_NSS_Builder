@@ -61,4 +61,6 @@ jobs:
         `uci set nss-wifi.general.firmware=11.4; uci commit nss-wifi; reboot`.
 
         The Xiaomi AX9000 builds on its own: its image runs the fan through
-        the EMC2305 with alpine-fan-control (LuCI: System -> Fan Control).
+        the EMC2305 with alpine-fan-control (LuCI: System -> Fan Control),
+        and ships dnsmasq-full, ip-full and tc-full where the other boards
+        get the small variants.
