@@ -42,6 +42,12 @@ CONFIG_PACKAGE_alpine-fan-control=y
 CONFIG_PACKAGE_luci-app-alpine-fan-control=y
 CONFIG_PACKAGE_i2c-tools=y
 
+## WireGuard interfaces in LuCI's network config. kmod-wireguard is already
+## in every image from devices/common/config, so the kernel side of a tunnel
+## needs nothing here; this is the front end that makes the interface type
+## show up under Interfaces.
+CONFIG_PACKAGE_luci-proto-wireguard=y
+
 ## Full variants of what the target ships small. Each pair provides one name -
 ## ip, tc, dnsmasq - so apk cannot hold both: the variant the rest of the build
 ## takes is switched off by hand, the way devices/common/config switches off
