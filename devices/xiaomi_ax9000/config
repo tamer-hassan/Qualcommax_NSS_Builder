@@ -1,0 +1,41 @@
+#
+# Xiaomi AX9000 (IPQ8072, 1 GB) — one board, one image set.
+#
+# Concatenated onto devices/common/config by prepare-build.sh. The board
+# used to sit in devices/ipq807x-1g with the rest of the 1 GB ipq807x
+# boards; it builds on its own because its fan control belongs to it
+# alone: CONFIG_TARGET_PER_DEVICE_ROOTFS sorts only DEVICE_PACKAGES by
+# board, so a package selected at image level lands in every board that
+# shares the build.
+#
+
+CONFIG_TARGET_qualcommax_ipq807x=y
+CONFIG_TARGET_qualcommax_ipq807x_DEVICE_xiaomi_ax9000=y
+
+## Active cooling.
+##
+## The board's fan sits behind a Microchip EMC2305 on a QUP I2C bus
+## (blsp1_i2c6, address 0x2f) and the board's DTS binds that fan as a cooling
+## device to the CPU thermal zones.
+##
+## kmod-hwmon-emc2305 is that driver, and the package is what to name here:
+## CONFIG_SENSORS_EMC2305 is not a symbol of OpenWrt's .config at all - it goes
+## into the kernel from the kmod's KCONFIG line, always as a module. Asking for
+## the kernel symbol instead would have defconfig drop it and the build stop.
+## =y builds emc2305.ko and installs it in this image (and keeps it in the kmod
+## feed); the board's DEVICE_PACKAGES name the same package, and the kmod's
+## AUTOLOAD probes it at boot.
+CONFIG_PACKAGE_kmod-hwmon-emc2305=y
+
+## alpine-fan-control from the alpinefancontrol feed (see build.yml's feeds): a
+## two-point fan curve read from the cpu0 thermal zone, written to the fan
+## either through the driver's hwmon pwm1 or straight to the EMC2305's Fan Drive
+## register over I2C. The feed ships the AX9000 values and the I2C method as its
+## default, and it is the one worth keeping: the daemon writes the full 8-bit
+## register, where the kernel's PWM steps on this board are coarse.
+##
+## i2c-tools is that path's tool, and a DEPENDS of the daemon; named here so the
+## image keeps it when pwm_method is set back to sysfs.
+CONFIG_PACKAGE_alpine-fan-control=y
+CONFIG_PACKAGE_luci-app-alpine-fan-control=y
+CONFIG_PACKAGE_i2c-tools=y

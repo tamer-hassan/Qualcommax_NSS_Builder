@@ -1,6 +1,9 @@
 #
 # Every ipq807x board with 1 GB or more of RAM, in one image set, except the
-# boards with a 6 MiB kernel partition (devices/ipq807x-6m-kernel).
+# boards with a 6 MiB kernel partition (devices/ipq807x-6m-kernel) and the
+# Xiaomi AX9000, which builds on its own (devices/xiaomi_ax9000): its fan
+# control is selected at image level, and PER_DEVICE_ROOTFS does not sort
+# image-level packages, so it would ride into every board here.
 #
 # Concatenated onto devices/common/config by prepare-build.sh. The ppe-nss
 # branch has no compile-time ath11k or NSS memory profile, so the groups split
@@ -44,7 +47,6 @@ CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_tcl_linkhub-hh500v=y
 CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_tplink_deco-x80-5g=y
 CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_tplink_eap620hd-v1=y
 CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_tplink_eap660hd-v1=y
-CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_xiaomi_ax9000=y
 CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_yuncore_ax880=y
 CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_zbtlink_zbt-z800ax=y
 CONFIG_TARGET_DEVICE_qualcommax_ipq807x_DEVICE_zyxel_nwa110ax=y
